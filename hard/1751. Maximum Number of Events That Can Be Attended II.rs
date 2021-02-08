@@ -4,11 +4,10 @@ impl Solution {
     pub fn max_value(mut events: Vec<Vec<i32>>, k: i32) -> i32 {
         events.sort_by(|a, b| a[1].cmp(&b[1]));
         let mut dp: Vec<Vec<i32>> = vec![vec![0; k as usize + 1]; events.len()];
-        for i in 0..events.len() {
+        dp[0][1] = events[0][2];
+        for i in 1..events.len() {
             let _start = events[i][0];
-            let _end = events[i][1];
             let _val = events[i][2];
-            
             let (mut start, mut end, mut idx): (i32, i32, i32) = (0, i as i32 - 1, -1);
             while start <= end {
                 let mid = (start + end) >> 1;
@@ -19,16 +18,14 @@ impl Solution {
                     end = mid - 1;
                 }
             }
-            if i > 0 {
-                for j in 0..=k as usize {
-                    dp[i][j] = dp[i-1][j];
-                }
+            for j in 1..=k as usize {
+                dp[i][j] = dp[i-1][j];
             }
             if idx == -1 {
                 dp[i][1] = max(dp[i][1], _val);
             } else {
                 for j in 1..=k as usize {
-                    dp[i][j] = max(dp[i-1][j], dp[idx as usize][j-1] + _val);    
+                    dp[i][j] = max(dp[i][j], dp[idx as usize][j-1] + _val);    
                 }
             }
         }
