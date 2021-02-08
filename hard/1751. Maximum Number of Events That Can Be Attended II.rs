@@ -18,9 +18,7 @@ impl Solution {
                     end = mid - 1;
                 }
             }
-            for j in 1..=k as usize {
-                dp[i][j] = dp[i-1][j];
-            }
+            (1..=k as usize).for_each(|j| dp[i][j] = dp[i-1][j]);
             if idx == -1 {
                 dp[i][1] = max(dp[i][1], _val);
             } else {
@@ -29,10 +27,6 @@ impl Solution {
                 }
             }
         }
-        let mut ans: i32 = 0;
-        for i in 0..=k as usize {
-            ans = max(ans, dp[events.len() - 1][i]);
-        }
-        ans
+        (1..=k as usize).map(|i| dp[events.len() - 1][i]).max().unwrap()
     }
 }
