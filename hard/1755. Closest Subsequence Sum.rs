@@ -28,27 +28,21 @@ impl Solution {
         let mut ans: i32 = std::i32::MAX;
         for i in 0..sums1.len() {
             // <= goal
+            let mut idx: i32 = -1;
             let (mut start, mut end): (i32, i32) = (0, sums2.len() as i32 - 1);
             while start <= end {
                 let mid = (start + end) >> 1;
                 let _sum = sums1[i] + sums2[mid as usize];
                 if _sum <= goal {
-                    ans = min(ans, goal - _sum);
+                    idx = mid;
                     start = mid + 1;
                 } else {
                     end = mid - 1;
                 }
             }
-            // >= goal
-            let (mut start, mut end): (i32, i32) = (0, sums2.len() as i32 - 1);
-            while start <= end {
-                let mid = (start + end) >> 1;
-                let _sum = sums1[i] + sums2[mid as usize];
-                if _sum >= goal {
-                    ans = min(ans, _sum - goal);
-                    end = mid - 1;
-                } else {
-                    start = mid + 1;
+            for j in (idx..idx+2) {
+                if j >= 0 && j < sums2.len() as i32 {
+                    ans = min(ans, (sums1[i] + sums2[j as usize] - goal).abs());
                 }
             }
         }
