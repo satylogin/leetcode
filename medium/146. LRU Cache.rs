@@ -81,11 +81,9 @@ impl List {
             self.tail = node.borrow().prev.as_ref().map(|node| Rc::clone(node));
         }
         if let Some(prev) = node.borrow().prev.as_ref() {
-            dbg!(prev.borrow().data);
             prev.borrow_mut().next = node.borrow().next.as_ref().map(|node| Rc::clone(node));
         }
         if let Some(next) = node.borrow().next.as_ref() {
-            dbg!(next.borrow().data);
             next.borrow_mut().prev = node.borrow().prev.as_ref().map(|node| Rc::clone(node));
         }
         node.borrow_mut().next = Some(Rc::clone(self.head.as_ref().unwrap()));
